@@ -1,7 +1,7 @@
 Welcome to our program storage.
 
-At the moment all of our programs use Arduino IDE, so make sure you installed this program.
-Second thing you need to do is to copy all of the libraries to the forder in the directory of your Arduino program, that is Arduino/libraries.
+At the moment all of our programs use Arduino IDE, so make sure you installed this program first.
+Second thing you need to do is to copy all of the libraries to the folder in the directory of your Arduino program, that is Arduino/libraries.
 
 Generally, the latest programs are the best.
 Right now, if you want to use basic CPS code, use version 5.1.

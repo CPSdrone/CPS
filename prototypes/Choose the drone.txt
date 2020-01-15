@@ -1,0 +1,7 @@
+Welcome to our prototypes storage
+Choose whether you want to explore CPS or CPS M
+
+To learn more about each of these drones, search facebook.com/cpsdrone or cpsdrone on youtube.
+Shortly:
+CPS is the basing drone for underwater exploration using only your live camera. More compact, less effort, fun build.
+CPS M is the modular drone for more complex underwater exploration. 4 slots for any desired modules [like water sampler, monipulator, pH meter]. Still compact form, more effort, super fun espetially with modules.
