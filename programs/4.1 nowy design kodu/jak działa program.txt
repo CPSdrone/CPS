@@ -1,0 +1,23 @@
+	pre setup
+const
+int
+serwa
+
+	setup
+serial.begin
+pinmode
+decodePPM
+	{decode mumble}
+
+	loop
+decode PPM
+	{decode mumble}
+chx working check
+motor.attach
+vals mapping
+start of void.stopallmotors if pressed
+	{write stop value}
+start of void.steer
+	{standard very simple}
+start of void.valcheck
+	{print all vals}
