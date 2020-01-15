@@ -1,3 +1,13 @@
+/////////////////////////////////PPM READING PRE SETUP/////////////////////////////////
+
+#define RECEIVE_PIN 2
+#define CHANNEL_AMOUNT 8
+#define DETECTION_SPACE 2500
+#define METHOD RISING
+
+int ch[CHANNEL_AMOUNT + 1];
+
+
 /////////////////////////////////STEERING PRE SETUP/////////////////////////////////
 
 #include <Servo.h>;
@@ -42,9 +52,7 @@ ppm_write();
 //Serial.print(ch[6]);Serial.print("\t");
 //Serial.print(ch[7]);Serial.print("\t");
 //Serial.print(ch[8]);Serial.print("\n");
-                                                                     /////////////                              //////////
-counter = millis()/1000;
-                                                                    
+                                                                     /////////////                              //////////                                                                 
 steer();
 
 valcheck();
