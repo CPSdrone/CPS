@@ -108,16 +108,17 @@ void steer(){
               valLLR = map(ch[4], 1000, 2000, 0, 180);
               valRUP = map(ch[2], 1000, 2000, 0, 180);
               valLUP = map(ch[3], 1000, 2000, 0, 180);
+              varCAM = map(ch[5], 1000, 2000, 0, 180);
               //valRLR = map(ch[1], 1000, 2000, 0, 180);
               
                      
-      motorupdown.write(180-valLUP);
+      motorupdown.write(180-valLUP+30);
       //motorside.write(valRLR);
-      motorleft.write(valRUP+(valLLR-90));
-      motorright.write(valRUP-(valLLR-90));
+      motorleft.write(valRUP+(valLLR-90)+42);
+      motorright.write(valRUP-(valLLR-90)+38);
       
       conCAM = constrain(conCAM,0, 180);
-      conCAM=conCAM+(90-varCAM)/8;
+      conCAM=conCAM+(90-varCAM)/90;
       motorcamera.write(conCAM);
 
       //vallights = map(ch[10], 1000, 2000, 0, 180);
