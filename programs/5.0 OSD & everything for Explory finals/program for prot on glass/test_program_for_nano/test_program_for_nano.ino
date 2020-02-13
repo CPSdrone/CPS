@@ -49,7 +49,7 @@ int lapapin;
 int probepin;
 
 
-int pHpin;
+int pHpin = 5;
 float calibration = 22.25;
 int pHreading = 0;
 unsigned long int avgValue;
@@ -85,7 +85,7 @@ Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1();
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define ONE_WIRE_BUS 9
+#define ONE_WIRE_BUS 3
 #define TEMPERATURE_PRECISION 12
 
 OneWire oneWire(ONE_WIRE_BUS);
@@ -106,7 +106,7 @@ int contemp;
 //int ledPinGreen = 9;
 //int ledPinRed = 11;
 
-int ledlights;
+int ledlights = 9;
 int vallights;
 int valBlink;
 
@@ -350,7 +350,7 @@ ch[i++] = dt;
 void analogreading(){
   //valbat=analogRead(A2);
   
-  valup=analogRead(A0);
+  valup=analogRead(A4);
   valright=analogRead(A2);
   valdown=analogRead(A1);
   valleft=analogRead(A3);
@@ -381,10 +381,10 @@ void analogreading(){
 
 
 void steer(){
-if(voltup>3.3 && voltup<3.5) lapapin = 4;
-else if (voltup>4.45 && voltup<4.65) probepin = 4;
+if(voltup>3.3 && voltup<3.5) lapapin = 5;
+else if (voltup>4.45 && voltup<4.65) probepin = 5;
 else if (voltup>2.4 && voltup<2.6){ 
-  pHpin = A4;
+  pHpin = A5;
   pHget();
 }
 
@@ -395,10 +395,10 @@ else if (voltright>2.4 && voltright<2.6){
   pHget();
 }
 
-if(voltdown>3.3 && voltdown<3.5) lapapin = 5;
-else if (voltdown>4.45 && voltdown<4.65) probepin = 5;
+if(voltdown>3.3 && voltdown<3.5) lapapin = 4;
+else if (voltdown>4.45 && voltdown<4.65) probepin = 4;
 else if (voltdown>2.4 && voltdown<2.6){
-  pHpin = A5;
+  pHpin = A0;
   pHget();
 }
 
@@ -585,46 +585,49 @@ void OSDrun(){
 /////TEST///////
 //volt = 12.6 - (millis()/1000);
 ////////////////
+osd.printMax7456Char(0x90,4,1,false,false);
+osd.print("100",0,1,false,true);
+osd.printMax7456Char(0x81,3,1,false,true);
 
-
-if(volt>11.7){
-  osd.printMax7456Char(0x90,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt>11.25){
-  osd.printMax7456Char(0x91,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt>10.8){
-  osd.printMax7456Char(0x92,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt>10.5){
-  osd.printMax7456Char(0x93,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt>10.35){
-  osd.printMax7456Char(0x94,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt>10.05){
-  osd.printMax7456Char(0x95,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt>9){
-  osd.printMax7456Char(0x96,0,1);
-  osd.printMax7456Char(0x00,1,1);
-  osd.printMax7456Char(0x00,2,1);
-  osd.printMax7456Char(0x00,3,1);
-}else if(volt<=9){
-  osd.print("dead",0,1);
-}
+//if(volt>11.7){
+//  osd.printMax7456Char(0x90,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}
+//else if(volt>11.25){
+//  osd.printMax7456Char(0x91,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}else if(volt>10.8){
+//  osd.printMax7456Char(0x92,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}else if(volt>10.5){
+//  osd.printMax7456Char(0x93,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}else if(volt>10.35){
+//  osd.printMax7456Char(0x94,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}else if(volt>10.05){
+//  osd.printMax7456Char(0x95,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}else if(volt>9){
+//  osd.printMax7456Char(0x96,0,1);
+//  osd.printMax7456Char(0x00,1,1);
+//  osd.printMax7456Char(0x00,2,1);
+//  osd.printMax7456Char(0x00,3,1);
+//}else if(volt<=9){
+//  osd.print("dead",0,1);
+//}
 
 
 //osd.print("throt",0,15);
