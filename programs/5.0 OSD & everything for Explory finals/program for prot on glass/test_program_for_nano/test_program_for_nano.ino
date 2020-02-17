@@ -1,7 +1,7 @@
 /////////////////////////////////PPM READING PRE SETUP/////////////////////////////////
 
 #define RECEIVE_PIN 2
-#define CHANNEL_AMOUNT 6
+#define CHANNEL_AMOUNT 8
 #define DETECTION_SPACE 2500
 #define METHOD RISING
 
@@ -297,14 +297,14 @@ analogreading();
 
 steer();
 
-      vartemp = map(ch[4], 1000, 2000, 0, 180);
-      
-      contemp = constrain(contemp, 0, 180);
-      contemp = contemp+(90-vartemp)/2;
+//      vartemp = map(ch[4], 1000, 2000, 0, 180);
+//      
+//      contemp = constrain(contemp, 0, 180);
+//      contemp = contemp+(90-vartemp)/2;
 
-  Serial.print(contemp);
+  //Serial.print(contemp);
   if(contemp>10){
-    temperatureGet();
+    //temperatureGet();
   }
   
 ledRun();
@@ -415,11 +415,14 @@ else if (voltleft>2.4 && voltleft<2.6){
             
               varCAM = map(ch[5], 1000, 2000, 0, 180);
               varLAP = map(ch[6], 1000, 2000, 0, 180);
-              varPRO = map(ch[2], 1000, 2000, 0, 180);
+              varPRO = map(ch[7], 1000, 2000, 0, 180);
       
       conCAM = constrain(conCAM,0, 180);
       conCAM=conCAM+(90-varCAM)/26;
       motorcamera.write(conCAM);
+
+      conLAP = constrain(conLAP,0, 180);
+      conLAP=conLAP+(90-varLAP)/50;
       motorlapa.write(varLAP);
       
       conPRO = constrain(conPRO,0, 180);
@@ -544,16 +547,13 @@ void printAddress(DeviceAddress deviceAddress)
 
 
 void ledRun(){
-      vallights = map(ch[3], 1000, 2000, 0, 180);
-      //valBlink = map(ch[9], 1000, 2000, 0, 180);
-      conlights = constrain(conlights, 0, 180);
-      conlights = conlights+(90-vallights)/2;
+      vallights = map(ch[8], 1000, 2000, 0, 180);
     
-      //Serial.println(conlights);
+      Serial.println(vallights);
 
-  if(conlights>160) analogWrite(ledlights, 255);
-  else if(conlights>70) analogWrite(ledlights, 70);
-  else if(conlights>=0) analogWrite(ledlights, 0);}
+  if(vallights>160) analogWrite(ledlights, 255);
+  else if(vallights>30) analogWrite(ledlights, 70);
+  else if(vallights>=0) analogWrite(ledlights, 0);}
 
 /*  if((valBlink=0)&&(micros()%0)) digitalWrite(ledlights, LOW);
 
@@ -684,12 +684,12 @@ if((voltup>2.4)&&(voltup<2.6)||(voltright>2.4)&&(voltright<2.6)||(voltdown>2.4)&
 
 
 void valcheck(){
-    Serial.print(" camera : ");
-    Serial.print(conCAM);
+    //Serial.print(" camera : ");
+    //Serial.print(conCAM);
     Serial.print(" lapa : ");
     Serial.print(varLAP);
-    Serial.print(" probe : ");
-    Serial.println(conPRO);
+    //Serial.print(" probe : ");
+    //Serial.println(conPRO);
 //
 //  delay(3000);
 }
