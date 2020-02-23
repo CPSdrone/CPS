@@ -106,7 +106,7 @@ int contemp;
 //int ledPinGreen = 9;
 //int ledPinRed = 11;
 
-int ledlights = 9;
+int ledlights = 6;
 int vallights;
 int valBlink;
 
@@ -303,9 +303,9 @@ steer();
 //      contemp = contemp+(90-vartemp)/2;
 
   //Serial.print(contemp);
-  if(contemp>10){
+  //if(contemp>10){
     //temperatureGet();
-  }
+  //}
   
 ledRun();
 OSDrun();
@@ -381,15 +381,15 @@ void analogreading(){
 
 
 void steer(){
-if(voltup>3.3 && voltup<3.5) lapapin = 5;
-else if (voltup>4.45 && voltup<4.65) probepin = 5;
+if(voltup>3.3 && voltup<3.5) lapapin = 20;
+else if (voltup>4.45 && voltup<4.65) probepin = 20;
 else if (voltup>2.4 && voltup<2.6){ 
-  pHpin = A5;
+  pHpin = A7;
   pHget();
 }
 
-if(voltright>3.3 && voltright<3.5) lapapin = 6;
-else if (voltright>4.45 && voltright<4.65) probepin = 6;
+if(voltright>3.3 && voltright<3.5) lapapin = 10;
+else if (voltright>4.45 && voltright<4.65) probepin = 10;
 else if (voltright>2.4 && voltright<2.6){
   pHpin = A6;
   pHget();
@@ -405,7 +405,7 @@ else if (voltdown>2.4 && voltdown<2.6){
 if(voltleft>3.3 && voltleft<3.5) lapapin = 7;
 else if (voltleft>4.45 && voltleft<4.65) probepin = 7;
 else if (voltleft>2.4 && voltleft<2.6){
-  pHpin = A7;
+  pHpin = A5;
   pHget();
 }
 
@@ -416,15 +416,17 @@ else if (voltleft>2.4 && voltleft<2.6){
               varCAM = map(ch[5], 1000, 2000, 0, 180);
               varLAP = map(ch[6], 1000, 2000, 0, 180);
               varPRO = map(ch[7], 1000, 2000, 0, 180);
-      
+
+
       conCAM = constrain(conCAM,0, 180);
       conCAM=conCAM+(90-varCAM)/26;
       motorcamera.write(conCAM);
 
       conLAP = constrain(conLAP,0, 180);
       conLAP=conLAP+(90-varLAP)/50;
-      motorlapa.write(varLAP);
       
+      
+
       conPRO = constrain(conPRO,0, 180);
       conPRO=conPRO+(90-varPRO)/2;
       motorprobe.write(conPRO);
@@ -547,13 +549,14 @@ void printAddress(DeviceAddress deviceAddress)
 
 
 void ledRun(){
-      vallights = map(ch[8], 1000, 2000, 0, 180);
+      vallights = map(ch[8], 1000, 2000, 0, 100);
     
       Serial.println(vallights);
 
-  if(vallights>160) analogWrite(ledlights, 255);
+  if(vallights>90) analogWrite(ledlights, 255);
   else if(vallights>30) analogWrite(ledlights, 70);
-  else if(vallights>=0) analogWrite(ledlights, 0);}
+  else if(vallights>=0) analogWrite(ledlights, 0);
+  }
 
 /*  if((valBlink=0)&&(micros()%0)) digitalWrite(ledlights, LOW);
 
@@ -644,11 +647,11 @@ osd.print(int(counter/60), 12, 1, 2, 0, false, true);
 
 osd.printMax7456Char(0xF5, 22, 1);
 osd.printMax7456Char(0xF6, 23, 1);
-osd.print(analogRead(ledlights), 24, 1, 2, 1, false, true);
+osd.print(vallights, 24, 1, 2, 1, false, true);
 
 if((voltup>3.3)&&(voltup<3.5)||(voltright>3.3)&&(voltright<3.5)||(voltdown>3.3)&&(voltdown<3.5)||(voltleft>3.3)&&(voltleft<3.5)){
   osd.print("arm", 21, 13);
-  osd.print(conLAP, 25, 13, 3, 0, false, true);
+  osd.print(conLAP, 25, 13, 3, 0, false, true);                                                                                               //arrow needed
 }else{
   for(int f = 21; f <= 27; f++){
   osd.printMax7456Char(0x00,f,13);
@@ -666,7 +669,7 @@ if((voltup>4.45)&&(voltup<4.65)||(voltright>4.45)&&(voltright<4.65)||(voltdown>4
 
 if((voltup>2.4)&&(voltup<2.6)||(voltright>2.4)&&(voltright<2.6)||(voltdown>2.4)&&(voltdown<2.6)||(voltleft>2.4)&&(voltleft<2.6)){
   osd.print("pH", 21, 12);
-  osd.print(pHpin, 24, 12, 2, 1, false, true);
+  osd.print(analogRead(pHpin), 24, 12, 2, 1, false, true);
 }else{
   for(int f = 21; f <= 27; f++){//                                idk if f can be for all
   osd.printMax7456Char(0x00,f,12);
