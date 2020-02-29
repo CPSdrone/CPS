@@ -106,7 +106,7 @@ int contemp;
 //int ledPinGreen = 9;
 //int ledPinRed = 11;
 
-int ledlights = 6;
+int ledlights = 8;
 int vallights;
 int valBlink;
 
@@ -350,7 +350,7 @@ ch[i++] = dt;
 void analogreading(){
   //valbat=analogRead(A2);
   
-  valup=analogRead(A4);
+  valup=analogRead(A0);
   valright=analogRead(A2);
   valdown=analogRead(A1);
   valleft=analogRead(A3);
@@ -381,35 +381,35 @@ void analogreading(){
 
 
 void steer(){
-if(voltup>3.3 && voltup<3.5) lapapin = 20;
-else if (voltup>4.45 && voltup<4.65) probepin = 20;
+if(voltup>3.3 && voltup<3.5) lapapin = 5;
+else if (voltup>4.45 && voltup<4.65) probepin = 5;
 else if (voltup>2.4 && voltup<2.6){ 
-  pHpin = A7;
-  pHget();
-}
-
-if(voltright>3.3 && voltright<3.5) lapapin = 10;
-else if (voltright>4.45 && voltright<4.65) probepin = 10;
-else if (voltright>2.4 && voltright<2.6){
-  pHpin = A6;
-  pHget();
-}
-
-if(voltdown>3.3 && voltdown<3.5) lapapin = 4;
-else if (voltdown>4.45 && voltdown<4.65) probepin = 4;
-else if (voltdown>2.4 && voltdown<2.6){
-  pHpin = A0;
-  pHget();
-}
-
-if(voltleft>3.3 && voltleft<3.5) lapapin = 7;
-else if (voltleft>4.45 && voltleft<4.65) probepin = 7;
-else if (voltleft>2.4 && voltleft<2.6){
   pHpin = A5;
   pHget();
 }
 
-              motorcamera.attach(8,500,2500);
+//if(voltright>3.3 && voltright<3.5) lapapin = 10;
+//else if (voltright>4.45 && voltright<4.65) probepin = 10;
+//else if (voltright>2.4 && voltright<2.6){
+//  pHpin = A6;
+//  pHget();
+//}
+//
+//if(voltdown>3.3 && voltdown<3.5) lapapin = 11;
+//else if (voltdown>4.45 && voltdown<4.65) probepin = 11;
+//else if (voltdown>2.4 && voltdown<2.6){
+//  pHpin = A7;
+//  pHget();
+//}
+//
+//if(voltleft>3.3 && voltleft<3.5) lapapin = 12;
+//else if (voltleft>4.45 && voltleft<4.65) probepin = 12;
+//else if (voltleft>2.4 && voltleft<2.6){
+//  pHpin = A8;
+//  pHget();
+//}
+
+              motorcamera.attach(3,500,2500);
               motorlapa.attach(lapapin,1000,2000);
               motorprobe.attach(probepin,1000,2000);
             
@@ -424,9 +424,8 @@ else if (voltleft>2.4 && voltleft<2.6){
 
       conLAP = constrain(conLAP,0, 180);
       conLAP=conLAP+(90-varLAP)/50;
+      motorlapa.write(varLAP);
       
-      
-
       conPRO = constrain(conPRO,0, 180);
       conPRO=conPRO+(90-varPRO)/2;
       motorprobe.write(conPRO);
@@ -534,10 +533,8 @@ void printTemperature(DeviceAddress deviceAddress)
 
 
 
-void printAddress(DeviceAddress deviceAddress)
-{
-  for (uint8_t i = 0; i < 8; i++)
-  {
+void printAddress(DeviceAddress deviceAddress){
+  for (uint8_t i = 0; i < 8; i++){
     if (deviceAddress[i] < 16) Serial.print("0");
     Serial.print(deviceAddress[i], HEX);
   }
@@ -553,9 +550,9 @@ void ledRun(){
     
       Serial.println(vallights);
 
-  if(vallights>90) analogWrite(ledlights, 255);
-  else if(vallights>30) analogWrite(ledlights, 70);
-  else if(vallights>=0) analogWrite(ledlights, 0);
+  if(vallights>90) analogWrite(ledlights,255);
+  else if(vallights>30) analogWrite(ledlights,70);
+  else if(vallights>=0) analogWrite(ledlights,0);
   }
 
 /*  if((valBlink=0)&&(micros()%0)) digitalWrite(ledlights, LOW);
@@ -582,56 +579,9 @@ void ledRun(){
 
 void OSDrun(){
 
-
-//if(clearval>1){
-
-/////TEST///////
-//volt = 12.6 - (millis()/1000);
-////////////////
 osd.printMax7456Char(0x90,4,1,false,false);
 osd.print("100",0,1,false,true);
 osd.printMax7456Char(0x81,3,1,false,true);
-
-//if(volt>11.7){
-//  osd.printMax7456Char(0x90,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}
-//else if(volt>11.25){
-//  osd.printMax7456Char(0x91,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}else if(volt>10.8){
-//  osd.printMax7456Char(0x92,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}else if(volt>10.5){
-//  osd.printMax7456Char(0x93,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}else if(volt>10.35){
-//  osd.printMax7456Char(0x94,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}else if(volt>10.05){
-//  osd.printMax7456Char(0x95,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}else if(volt>9){
-//  osd.printMax7456Char(0x96,0,1);
-//  osd.printMax7456Char(0x00,1,1);
-//  osd.printMax7456Char(0x00,2,1);
-//  osd.printMax7456Char(0x00,3,1);
-//}else if(volt<=9){
-//  osd.print("dead",0,1);
-//}
-
 
 //osd.print("throt",0,15);
 //osd.print(max((valRUP+(valLLR-90)),(valRUP-(valLLR-90))),16,1,1,0,false,true);
