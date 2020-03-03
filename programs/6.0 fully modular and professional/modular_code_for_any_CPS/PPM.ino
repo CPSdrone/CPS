@@ -1,10 +1,3 @@
-#define RECEIVE_PIN 2
-#define CHANNEL_AMOUNT 8
-#define DETECTION_SPACE 2
-#define METHOD RISING
-
-int ch[CHANNEL_AMOUNT + 1];
-
 void ppm_write()
 {
 static unsigned long int t;
@@ -12,11 +5,11 @@ if (millis() - t < 100)
 return 0;
 for (byte i = 0; i < CHANNEL_AMOUNT + 1; i++)
 {
-Serial.print(ch[i]);
-Serial.print("\t");
+  Serial.print(ch[i]);
+  Serial.print("\t");
 }
-Serial.print("\n");
-t = millis();
+  Serial.print("\n");
+  t = millis();
 }
 
 void ppm_interrupt()
