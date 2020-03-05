@@ -1,3 +1,5 @@
+
+
 //////PPM READING PRE SETUP/////
 
 #define RECEIVE_PIN 2
@@ -15,6 +17,11 @@ Max7456 osd;
 //////FOR ALL GAMERS OUT THERE/////
 #include <Servo.h>;
 
+//////THERMOMETER PRE SETUP///////
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+
 void setup()
 {
   Serial.begin(115200);
@@ -27,7 +34,7 @@ void setup()
   osd.init(10);
   osd.setDisplayOffsets(40,9);
   osd.activateOSD();
-  //internalStart();
+  internalStart();
 }
 
 

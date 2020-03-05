@@ -7,8 +7,9 @@ float valbat;
 float volt;
 
 #define ledlights 6
-int vallights;
+float vallights;
 int osdlights;
+float conLIGHT;
 /*int ledPinGreen = 9;
 int ledPinRed = 11;*/
 
@@ -40,7 +41,7 @@ void steerint(){
   readbat();
   steercamera();
   steerlights();
-  //temperatureGet();
+  //thermometerRun();
 }
 
 void readbat(){
@@ -49,7 +50,7 @@ void readbat(){
   osd.printMax7456Char(0x90,4,1,false,false);
   osd.print("100",0,1,false,true);
   osd.printMax7456Char(0x81,3,1,false,true);
-  
+  osd.print("12.6V",0,2,false,true);
 }
 
 void steercamera(){
@@ -59,6 +60,28 @@ void steercamera(){
     conCAM = constrain(conCAM, 0, 180);
     conCAM=conCAM+(90-varCAM)/64;
     motorcamera.write(conCAM);
+
+    osd.print("cam", 0, 15);
+
+    if(conCAM>178){
+      osd.printMax7456Char(0xB7, 4, 15);
+    }else if(conCAM>148){
+      osd.printMax7456Char(0xB8, 4, 15);
+    }else if(conCAM>118){
+      osd.printMax7456Char(0xB9, 4, 15);
+    }else if(conCAM>92){
+      osd.printMax7456Char(0xBA, 4, 15);
+    }else if(conCAM<=92 && conCAM>=88){
+      osd.printMax7456Char(0xBB, 4, 15);
+    }else if(conCAM>62){
+      osd.printMax7456Char(0xBC, 4, 15);
+    }else if(conCAM>32){
+      osd.printMax7456Char(0xBD, 4, 15);
+    }else if(conCAM>2){
+      osd.printMax7456Char(0xBE, 4, 15);
+    }else if(conCAM<=2){
+      osd.printMax7456Char(0xBF, 4, 15);
+    }
 
     //printcamera();
 }
@@ -77,18 +100,26 @@ void printcamera(){
 
 
 void steerlights(){
-  vallights = map(ch[8], 1000, 2000, 0, 100);
-  
-  if(vallights>90){ analogWrite(ledlights,255);
-    osdlights=100;}
-  else if(vallights>30){ analogWrite(ledlights,70);
-    osdlights=50;}
-  else if(vallights>=0){ analogWrite(ledlights,0);
-    osdlights=0;}
+  vallights = map(ch[8], 1000, 2000, 0, 255);
 
-  osd.printMax7456Char(0xF5, 22, 1);
-  osd.printMax7456Char(0xF6, 23, 1);
-  osd.print(osdlights, 24, 1, 2, 1, false, true);
+  conLIGHT=conLIGHT+(vallights-conLIGHT)/30;
+
+if(conLIGHT>1){
+  analogWrite(ledlights,conLIGHT);
+}else{
+  analogWrite(ledlights,0);
+}
+
+if(conLIGHT>200){
+  osd.printMax7456Char(0xF6, 27, 1);
+  osd.printMax7456Char(0xF5, 26, 1);
+}else if(conLIGHT>100){
+  osd.printMax7456Char(0xF6, 27, 1);
+  osd.printMax7456Char(0x00, 26, 1);
+}else{
+  osd.printMax7456Char(0x00, 27, 1);
+  osd.printMax7456Char(0x00, 26, 1);
+}
 
   //printlights();
 }
@@ -99,7 +130,7 @@ void steerlights(){
 void printlights(){
   Serial.print("lights:");
   Serial.print("\t");
-  Serial.print(vallights);
+  Serial.print(conLIGHT);
   Serial.print("\t");
   Serial.println(analogRead(ledlights));
   delay(000);
