@@ -20,8 +20,8 @@ float voltleft;
 
 #define UL 2.7
 #define DL 2.5
-#define UP 0.5
-#define DP 0.3
+#define UP 4.3
+#define DP 4.1
 #define UH 1.8
 #define DH 1.6   
 
@@ -51,29 +51,22 @@ void modulerun(){
   voltleft = valleft * 5.0/1023;
 
     if(voltup>DL && voltup<UL) lapapin = 5;
-    else if (voltup>DP && voltup<UP) probepin = 5;
-    else if (voltup>DH && voltup<UH) pHpin = A1;
-    else {probepin = 0;
-          lapapin = 0;}
-    
-    if(voltright>DL && voltright<UL) lapapin = 7;
+    else if (voltright>DL && voltright<UL) lapapin = 7;
+    else if (voltdown>DL && voltdown<UL) lapapin = 8;
+    else if (voltleft>DL && voltleft<UL) lapapin = 9;
+    else lapapin = 0;
+
+    if(voltup>DP && voltup<UP) probepin = 5;
     else if (voltright>DP && voltright<UP) probepin = 7;
-    else if (voltright>DH && voltright<UH) pHpin = A5;
-    else {probepin = 0;
-          lapapin = 0;}
-    
-    if(voltdown>DL && voltdown<UL) lapapin = 8;
     else if (voltdown>DP && voltdown<UP) probepin = 8;
-    else if (voltdown>DH && voltdown<UH) pHpin = A6;
-    else {probepin = 0;
-          lapapin = 0;}
-    
-    if(voltleft>DL && voltleft<UL) lapapin = 9;
     else if (voltleft>DP && voltleft<UP) probepin = 9;
+    else probepin = 5;
+
+    if(voltup>DH && voltup<UH) pHpin = A1;
+    else if (voltright>DH && voltright<UH) pHpin = A5;
+    else if (voltdown>DH && voltdown<UH) pHpin = A6;
     else if (voltleft>DH && voltleft<UH) pHpin = A7;
-    else {probepin = 0;
-          lapapin = 0;}
-    
+    else pHpin = 0;
 
       varLAP = map(ch[6], 1000, 2000, 0, 180);
       varPRO = map(ch[7], 500, 2500, 0, 180);
@@ -124,7 +117,7 @@ void modulerun(){
     }
   }
   
-//printmodules();
+printmodules();
 }
 
 
@@ -157,10 +150,12 @@ void pHget(){
  float pHVol=(float)avgValue*5.0/1024/6;
  float phValue = -5.70 * pHVol + calibration;
 
-//  Serial.print("pH:");
-//  Serial.print("\t");
-//  Serial.println(phValue);
-//  delay(000);
+    /*Serial.print("pH:");
+    Serial.print("\t");
+    Serial.print(phValue);
+    Serial.print("\t");
+    Serial.println(pHpin);
+    delay(000);*/
   
 
  
@@ -169,7 +164,7 @@ void pHget(){
     osd.print(phValue, 24, 13, 2, 1, false, true);
   }else{
     for(int f = 21; f <= 27; f++){
-    osd.printMax7456Char(0x00,f,12);
+    osd.printMax7456Char(0x00,f,13);
     }
   }
 }
@@ -192,10 +187,10 @@ void printmodules(){
   Serial.print("lapa: ");
   Serial.print(varLAP);
   Serial.print("\t");
-  Serial.println(analogRead(lapapin));
+  Serial.println(lapapin);
   Serial.print("probe: ");
   Serial.print(conPRO);
   Serial.print("\t");
-  Serial.println(analogRead(probepin));
+  Serial.println(probepin);
   delay(000);
 }
