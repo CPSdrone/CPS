@@ -38,19 +38,19 @@ void ledStart(){
 
 
 void steerint(){
-  readbat();
+  //readbat();
   steercamera();
-  steerlights();
+  //steerlights();
   //thermometerRun();
 }
 
 void readbat(){
   /*valbat=analogRead(A2);
   volt = valbat * 5.0/1023;*/
-  osd.printMax7456Char(0x90,4,1,false,false);
+  /*osd.printMax7456Char(0x90,4,1,false,false);
   osd.print("100",0,1,false,true);
   osd.printMax7456Char(0x81,3,1,false,true);
-  osd.print("12.6V",0,2,false,true);
+  osd.print("12.6V",0,2,false,true);*/
 }
 
 void steercamera(){
@@ -61,7 +61,7 @@ void steercamera(){
     conCAM=conCAM+(90-varCAM)/64;
     motorcamera.write(conCAM);
 
-    osd.print("cam", 0, 15);
+    /*osd.print("cam", 0, 15);
 
     if(conCAM>178){
       osd.printMax7456Char(0xB7, 4, 15);
@@ -81,7 +81,7 @@ void steercamera(){
       osd.printMax7456Char(0xBE, 4, 15);
     }else if(conCAM<=2){
       osd.printMax7456Char(0xBF, 4, 15);
-    }
+    }*/
 
     printcamera();
 }
@@ -110,7 +110,7 @@ if(conLIGHT>1){
   analogWrite(ledlights,0);
 }
 
-if(conLIGHT>200){
+/*if(conLIGHT>200){
   osd.printMax7456Char(0xF6, 27, 1);
   osd.printMax7456Char(0xF5, 26, 1);
 }else if(conLIGHT>100){
@@ -119,7 +119,7 @@ if(conLIGHT>200){
 }else{
   osd.printMax7456Char(0x00, 27, 1);
   osd.printMax7456Char(0x00, 26, 1);
-}
+}*/
 
   //printlights();
 }

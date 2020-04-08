@@ -1,4 +1,4 @@
-Servo motorlapa;
+/*Servo motorlapa;
 Servo motorprobe;
 
 #define calibration 22.25
@@ -193,4 +193,4 @@ void printmodules(){
   Serial.print("\t");
   Serial.println(probepin);
   delay(000);
-}
+}*/
