@@ -155,12 +155,12 @@ void loop() {
 
 
   /* Estimate angles using gyro only */
-  gyroXangle += gyroX * dt; // Calculate gyro angle without any filter
-  gyroYangle += gyroY * dt;
-  gyroZangle += gyroZ * dt;
-  //gyroXangle += kalmanX.getRate() * dt; // Calculate gyro angle using the unbiased rate from the Kalman filter
-  //gyroYangle += kalmanY.getRate() * dt;
-  //gyroZangle += kalmanZ.getRate() * dt;
+  //gyroXangle += gyroX * dt; // Calculate gyro angle without any filter
+  //gyroYangle += gyroY * dt;
+  //gyroZangle += gyroZ * dt;
+  gyroXangle += kalmanX.getRate() * dt; // Calculate gyro angle using the unbiased rate from the Kalman filter
+  gyroYangle += kalmanY.getRate() * dt;
+  gyroZangle += kalmanZ.getRate() * dt;
 
   /* Estimate angles using complimentary filter */
   compAngleX = 0.7 * (compAngleX + gyroX * dt) + 0.3 * roll; // Calculate the angle using a Complimentary filter
@@ -224,7 +224,7 @@ void loop() {
 
   Serial.println();
 
-  delay(200);
+  delay(00);
 }
 
 void updatesensors() {
@@ -260,15 +260,20 @@ void updateYaw() { // See: http://www.freescale.com/files/sensors/doc/app_note/A
   magX *= -1; // Invert axis - prob not needed
   magZ *= -1;
 
-  //double rollAngle = kalAngleX * DEG_TO_RAD;
-  //double pitchAngle = kalAngleY * DEG_TO_RAD;
+  /*double mag_norm = sqrt((magX*magX)+(magY*magY)+(magZ*magZ));
+  magX=magX/mag_norm;
+  magY=magY/mag_norm;
+  magZ=magZ/mag_norm;*/
 
-  double rollAngle = compAngleX * DEG_TO_RAD;
+  double rollAngle = compAngleX * DEG_TO_RAD;  //originally kalAngle
   double pitchAngle = compAngleY * DEG_TO_RAD;
 
   double Bfy = magZ * sin(rollAngle) - magY * cos(rollAngle);
   double Bfx = magX * cos(pitchAngle) + magY * sin(pitchAngle) * sin(rollAngle) + magZ * sin(pitchAngle) * cos(rollAngle);
   yaw = atan2(-Bfy, Bfx) * RAD_TO_DEG;
 
+  //yaw = atan(accZ / sqrt(accX*accX + accZ*accZ)) * RAD_TO_DEG;
+  //yaw = atan2(accX, accY) * RAD_TO_DEG;
+  
   yaw *= -1; //prob not needed
 }

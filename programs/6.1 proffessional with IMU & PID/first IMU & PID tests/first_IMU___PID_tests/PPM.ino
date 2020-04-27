@@ -5,10 +5,10 @@ if (millis() - t < 100)
 return 0;
 for (byte i = 0; i < CHANNEL_AMOUNT + 1; i++)
 {
-  Serial.print(ch[i]);
-  Serial.print("\t");
+  //Serial.print(ch[i]);
+  //Serial.print("\t");
 }
-  Serial.print("\n");
+  //Serial.print("\n");
   t = millis();
 }
 
