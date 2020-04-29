@@ -3,12 +3,7 @@ void ppm_write()
 static unsigned long int t;
 if (millis() - t < 100)
 return 0;
-for (byte i = 0; i < CHANNEL_AMOUNT + 1; i++)
-{
-  //Serial.print(ch[i]);
-  //Serial.print("\t");
-}
-  //Serial.print("\n");
+//ppmprint();
   t = millis();
 }
 
@@ -25,4 +20,20 @@ if ((dt > DETECTION_SPACE) || (i > CHANNEL_AMOUNT))
 i = 0;
 }
 ch[i++] = dt;
+
+  /*Serial.println(t);
+  if(100-t<100) {DISCONNECT= 0;
+    for (byte i = 0; i < CHANNEL_AMOUNT + 1; i++){
+      ch[i]=1500;
+    }
+  }else{ DISCONNECT= 1;}*/
+}
+
+void ppmprint(){
+  for (byte i = 0; i < CHANNEL_AMOUNT + 1; i++){
+  Serial.print(ch[i]);
+  Serial.print("\t");
+  }
+  Serial.print(DISCONNECT);
+  Serial.print("\n");
 }

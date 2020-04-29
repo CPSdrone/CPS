@@ -69,6 +69,7 @@ void loop()
   compRoll = 0.5 * (compRoll + g.gyro.x * dt) + 0.5 * accRoll;
 
   accPitch = -(atan2(a.acceleration.x, sqrt(a.acceleration.y * a.acceleration.y + a.acceleration.z * a.acceleration.z)) * 180.0) / M_PI;
+  //accPitch  = (atan2(a.acceleration.x, a.acceleration.z) * 180.0) / M_PI;
   compPitch = 0.5 * (compPitch + g.gyro.y * dt) + 0.5 * accPitch;
 
 
@@ -103,6 +104,9 @@ void loop()
   Serial.print("\t");
   Serial.print("Roll ");
   Serial.print(compRoll);
+  Serial.print("\t");
+  Serial.print("Pitch ");
+  Serial.print(compPitch);
   Serial.print("\t");
   Serial.print("Stick ");
   Serial.print(stick);

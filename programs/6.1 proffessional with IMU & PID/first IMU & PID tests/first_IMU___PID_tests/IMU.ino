@@ -20,6 +20,10 @@ float compPitch = 0;
 float compRoll = 0;
 float compYaw = 0;
 
+float offaccX;
+float offaccY;
+float offaccZ;
+
 void setupIMU()
 {
   //while (!Serial) {delay(1);}
@@ -38,20 +42,42 @@ void runIMU()
 
   double kt = (double)micros();
   double dt = (double)(micros() - kt) / 1000000;
+
+  int OFFSET = ch[5];
+  if (OFFSET>1500){
+    offaccX = a.acceleration.x;
+    offaccY = a.acceleration.y;
+    offaccZ = a.acceleration.z;
+  }
   
   // Calculate Pitch & Roll from accelerometer (deg)
   //accPitch = (atan2(a.acceleration.x, a.acceleration.z) * 180.0) / M_PI;
-  accPitch = -(atan2(a.acceleration.x, sqrt(a.acceleration.y * a.acceleration.y + a.acceleration.z * a.acceleration.z)) * 180.0) / M_PI;
-  accRoll  = (atan2(a.acceleration.y, a.acceleration.z) * 180.0) / M_PI;
+  accPitch = (-(atan2(a.acceleration.x-offaccX, sqrt((a.acceleration.y-offaccY) * (a.acceleration.y-offaccY) + (a.acceleration.z-offaccZ+9.81) * (a.acceleration.z-offaccZ+9.81))) * 180.0) / M_PI);
+  accRoll  = ((atan2(a.acceleration.y-offaccY, a.acceleration.z-offaccZ+9.81) * 180.0) / M_PI);
 
   double Bfy = m.magnetic.z * sin(accRoll) - m.magnetic.y * cos(accRoll);
   double Bfx = m.magnetic.x * cos(accPitch) + m.magnetic.y * sin(accPitch) * sin(accRoll) + m.magnetic.z * sin(accPitch) * cos(accRoll);
   accmagYaw = atan2(-Bfy, Bfx) * RAD_TO_DEG;
 
   //Complementary filter
-  compPitch = 0.5 * (compPitch + g.gyro.y * dt) + 0.5 * accPitch;
-  compRoll = 0.5 * (compRoll + g.gyro.x * dt) + 0.5 * accRoll;
-  compYaw = 0.5 * (compYaw + g.gyro.z * dt) + 0.5 * accmagYaw;
+  compPitch = 0.9 * (compPitch + g.gyro.y * dt) + 0.1 * accPitch; //had 50/50 but while quick accel its bad
+  compRoll = 0.9 * (compRoll + g.gyro.x * dt) + 0.1 * accRoll;
+  compYaw = 0.9 * (compYaw + g.gyro.z * dt) + 0.1 * accmagYaw;
+
+  
+ /*Serial.print(offPitch);
+ Serial.print("\t");
+ Serial.print(offRoll);
+ Serial.print("\t");
+ Serial.println(OFFSET);
+ Serial.print("");
+ Serial.print(compPitch);
+ Serial.print("\t");
+ Serial.println(compRoll);*/
+
+  /*accX = a.acceleration.x - map(compRoll,-90,90,-1,1)*9.81//maybe sins and tangents
+  accY = a.acceleration.y - map(compPitch,-90,90,-1,1)*9.81
+  accZ = a.acceleration.z // - Pitch + Roll jakoś*/
   
   /*// Kalman filter
   kalPitch = kalmanY.update(accPitch, g.gyro.y);
