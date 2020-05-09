@@ -1,0 +1,41 @@
+1st
+
+pitch = arctan(Ax/sqrt(Ay^2+Az^2))
+roll = arctan(Ay/sqrt(Ax^2+Az^2))
+theta = arctan(sqrt(Ax^2+Az^2)/Az)
+
+If Ax, Ay, and Az represents a point in respect to our original frame of reference, then the translated position due to a given set of pitch, roll, and yaw angles is given by the following formula:
+Ax' = cos(yaw)*cos(pitch)*Ax + (sin(yaw)*cos(roll)+cos(yaw)*sin(pitch)*sin(roll))*ay +
+       (sin(yaw)*sin(roll)-cos(yaw)*sin(pitch)*cos(roll))*az
+Ay' = -sin(yaw)*cos(pitch)*Ax + (cos(yaw)*cos(roll)-
+        sin(yaw)*sin(pitch))*Ay+(cos(yaw)*sin(roll)+sin(yaw)*sin(pitch)*cos(roll))*Az
+Az' = sin(pitch)*Ax-cos(pitch)*sin(roll)*Ay+cos(pitch)*cos(roll)*Az
+where roll, pitch, and yaw are all between 0 and PI
+
+2nd
+
+pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
+
+roll = 180 * atan (accelerationY/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;
+
+yaw = 180 * atan (accelerationZ/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;
+
+3rd
+
+yaw = atan2(sqrt(ax^2+ay^2),az)
+
+4th
+
+yaw = 180 * atan (accelerationZ/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;
+
+5th
+
+magx = magnetometer[0]*cos(pitch)+magnetometer[1]*sin(roll)*sin(pitch) + magnetometer[2]*sin(pitch)*cos(roll);
+
+magy = -magnetometer[1]*cos(roll) + magnetometer[2]*sin(roll);
+
+yaw =  atan2(-magy,magx)*180/M_PI; 
+
+6th
+
+D = arctan(yGaussData/xGaussData)∗(180/π)
