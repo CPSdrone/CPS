@@ -3,10 +3,9 @@
 //////PPM READING PRE SETUP/////
 
 #define RECEIVE_PIN 2
-#define CHANNEL_AMOUNT 6
+#define CHANNEL_AMOUNT 8
 #define DETECTION_SPACE 2500
 #define METHOD RISING
-byte DISCONNECT;
 
 int ch[CHANNEL_AMOUNT + 1];
 

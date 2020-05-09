@@ -1,0 +1,16 @@
+PID test drone [deskodron PID]
+
+This prototype was created to test our new PID system for steering, mainly self leveling. It is our first prototype in which we had 5 motors:
+motor A, left front [up, down]
+motor B, right front [up, down]
+motor C, middle back [up, down]
+motor L, left [forward, backward]
+motor R, right [forward, backward]
+
+With these motors it is possible to change yaw, pitch, roll as well as swim in x and z axis.
+
+It consists mainly of 2 big 3D printed boxes and a wooden frame.
+
+
+
+More about the prototype, assembly manual and other cool stuff will be added soon.

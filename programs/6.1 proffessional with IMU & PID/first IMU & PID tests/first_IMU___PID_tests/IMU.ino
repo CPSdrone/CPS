@@ -20,9 +20,16 @@ float compPitch = 0;
 float compRoll = 0;
 float compYaw = 0;
 
+float mx_min, my_min, mz_min;
+float mx_max, my_max, mz_max;
+
 float offaccX;
 float offaccY;
 float offaccZ;
+
+float offmagX;
+float offmagY;
+float offmagZ;
 
 void setupIMU()
 {
@@ -42,38 +49,75 @@ void runIMU()
 
   double kt = (double)micros();
   double dt = (double)(micros() - kt) / 1000000;
+  
+  
+  mx_min = -0.05; //swapped
+  my_min = -0.13;
+  mz_min = -0.28;
+  
+  mx_max = 0.41;
+  my_max = 0.27;
+  mz_max = 0.12;
+  
+  float mx_offset = (mx_min + mx_max)/2;
+  float my_offset = (my_min + my_max)/2;
+  float mz_offset = (mz_min + mz_max)/2;
+
+  float avg_delta_x = (mx_max - mx_min)/2;
+  float avg_delta_y = (my_max - my_min)/2;
+  float avg_delta_z = (mz_max - mz_min)/2;
+  
+  float avg_delta = (avg_delta_x + avg_delta_y + avg_delta_z)/3;
+
+  float scale_x = avg_delta / avg_delta_x;                  // this is different
+  float scale_y = avg_delta / avg_delta_y;
+  float scale_z = avg_delta / avg_delta_z;
+  
+  float calmagX = (m.magnetic.x - mx_offset) * scale_x;
+  float calmagY = (m.magnetic.y - my_offset) * scale_y;
+  float calmagZ = (m.magnetic.z - mz_offset) * scale_z;//*/
+
 
   int OFFSET = ch[5];
   if (OFFSET>1500){
     offaccX = a.acceleration.x;
     offaccY = a.acceleration.y;
-    offaccZ = a.acceleration.z;
+    offaccZ = a.acceleration.z-9.81;
+
+    offmagX = calmagX-0.19;
+    offmagY = calmagY-0.02;
+    offmagZ = calmagZ+0.38;
   }
   
   // Calculate Pitch & Roll from accelerometer (deg)
   //accPitch = (atan2(a.acceleration.x, a.acceleration.z) * 180.0) / M_PI;
-  accPitch = (-(atan2(a.acceleration.x-offaccX, sqrt((a.acceleration.y-offaccY) * (a.acceleration.y-offaccY) + (a.acceleration.z-offaccZ+9.81) * (a.acceleration.z-offaccZ+9.81))) * 180.0) / M_PI);
-  accRoll  = ((atan2(a.acceleration.y-offaccY, a.acceleration.z-offaccZ+9.81) * 180.0) / M_PI);
+  accPitch = (-(atan2(a.acceleration.x-offaccX, sqrt((a.acceleration.y-offaccY) * (a.acceleration.y-offaccY) + (a.acceleration.z-offaccZ) * (a.acceleration.z-offaccZ))) * 180.0) / M_PI);
+  accRoll  = ((atan2(a.acceleration.y-offaccY, a.acceleration.z-offaccZ) * 180.0) / M_PI)-3;
 
-  double Bfy = m.magnetic.z * sin(accRoll) - m.magnetic.y * cos(accRoll);
-  double Bfx = m.magnetic.x * cos(accPitch) + m.magnetic.y * sin(accPitch) * sin(accRoll) + m.magnetic.z * sin(accPitch) * cos(accRoll);
+  double Bfy = (calmagZ-offmagZ) * sin(accRoll*DEG_TO_RAD) - (calmagY-offmagY) * cos(accRoll*DEG_TO_RAD);
+  double Bfx = (calmagX-offmagX) * cos(accPitch*DEG_TO_RAD) + (calmagY-offmagY) * sin(accPitch*DEG_TO_RAD) * sin(accRoll*DEG_TO_RAD) + (calmagZ-offmagZ) * sin(accPitch*DEG_TO_RAD) * cos(accRoll*DEG_TO_RAD);
   accmagYaw = atan2(-Bfy, Bfx) * RAD_TO_DEG;
 
   //Complementary filter
-  compPitch = 0.9 * (compPitch + g.gyro.y * dt) + 0.1 * accPitch; //had 50/50 but while quick accel its bad
-  compRoll = 0.9 * (compRoll + g.gyro.x * dt) + 0.1 * accRoll;
-  compYaw = 0.9 * (compYaw + g.gyro.z * dt) + 0.1 * accmagYaw;
+  compPitch = 0.8 * (compPitch + g.gyro.y * dt) + 0.2 * accPitch; //had 50/50 but while quick accel its bad
+  compRoll = 0.8 * (compRoll + g.gyro.x * dt) + 0.2 * accRoll;
+  compYaw = 0.3 * (compYaw + g.gyro.z * dt) + 0.7 * accmagYaw;
 
+ //ch[5]=2000;
   
- /*Serial.print(offPitch);
+ /*Serial.print(calmagX);
  Serial.print("\t");
- Serial.print(offRoll);
+ Serial.print(calmagY);
  Serial.print("\t");
- Serial.println(OFFSET);
- Serial.print("");
+ Serial.print(calmagZ);
+ Serial.print("\t");
+ Serial.print(compYaw);
+ Serial.print("\t");
  Serial.print(compPitch);
  Serial.print("\t");
- Serial.println(compRoll);*/
+ Serial.print(compRoll);
+ Serial.print("\t");
+ Serial.println();//*/
 
   /*accX = a.acceleration.x - map(compRoll,-90,90,-1,1)*9.81//maybe sins and tangents
   accY = a.acceleration.y - map(compPitch,-90,90,-1,1)*9.81

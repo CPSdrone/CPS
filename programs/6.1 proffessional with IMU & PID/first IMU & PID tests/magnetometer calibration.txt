@@ -1,0 +1,79 @@
+HARD -> shift from origin
+SOFT -> stretch
+
+
+	manual
+
+HARD IRON OFFSET
+for every axis: 
+(parallel to north)
+reading + reading opposite way = 2 mag offset
+then substract calculated offset from readings on given axis
+
+
+Raspberry Pi maybe has some functionality with LSM9D01
+
+
+
+	automatic
+
+HARD
+automating manual method with live min and max values, then live calc offsets
+
+int mx, my, mz;
+
+int mx_min, my_min, mz_min;
+int mx_max, my_max, mz_max;
+int mx_offset, my_offset, mz_offset;
+
+int mx_calibrated, my_calibrated, mz_calibrated;
+
+// get min/max values by taking readings
+// from magnetometer of your choice
+
+mx_offset = (mx_min + mx_max)/2;
+my_offset = (my_min + my_max)/2;
+mz_offset = (mz_min + mz_max)/2;
+
+mx_calibrated = mx - mx_offset;
+my_calibrated = my - my_offset;
+mz_calibrated = mz - mz_offset;
+
+SOFT
+
+int mx_scale, my_scale, mz_scale;
+
+mx_scale = (mx_max - mx_min)/2;
+my_scale = (my_max - my_min)/2;
+mz_scale = (mz_max - mz_min)/2;
+
+float avg_scale = (mx_scale + my_scale + mz_scale)/3;
+
+mx_calibrated = avg_scale/(mx - mx_offset);
+my_calibrated = avg_scale/(my - my_offset);
+mz_calibrated = avg_scale/(mz - mz_offset);
+
+
+OTHER SOFT
+
+avg_delta_x = (max(x) - min(x)) / 2
+avg_delta_y = (max(y) - min(y)) / 2
+avg_delta_z = (max(z) - min(z)) / 2
+
+avg_delta = (avg_delta_x + avg_delta_y + avg_delta_z) / 3
+
+scale_x = avg_delta / avg_delta_x                       // this is different
+scale_y = avg_delta / avg_delta_y
+scale_z = avg_delta / avg_delta_z
+
+corrected_x = (sensor_x - offset_x) * scale_x
+corrected_y = (sensor_y - offset_y) * scale_y
+corrected_z = (sensor_z - offset_z) * scale_z
+
+
+
+
+
+using Arduino code for different IMU somehow (a lot of work)
+
+visualisation of the spheres - some advanced, better claib

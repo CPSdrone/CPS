@@ -41,9 +41,9 @@ void setup()
 void loop()
 {
 ppm_write();
-//steer();
-steerint();
-modulerun();
+steer();
+//steerint();
+//modulerun();
 
 unsigned long counter = 0;
 counter = millis()/1000;
