@@ -4,11 +4,5 @@ a360.co/3ceX0d0
 Battery case:
 a360.co/2zsh5yc
 
-A & B motors mount (same model):
-no link yet
-
-C motor mount:
-no link yet :)
-
-R & L motors mount (same model):
-no link either. Honelstly, you can design it youself.
+motors mounts:
+link very soon
