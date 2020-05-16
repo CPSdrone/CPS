@@ -95,7 +95,7 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
 
   
 
-  if (FREEMODE>1500){
+  if (1){
     Input[2] = 0;
     Stick[2] = valLLR;
   }else{

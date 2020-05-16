@@ -3,7 +3,7 @@
 //////PPM READING PRE SETUP/////
 
 #define RECEIVE_PIN 2
-#define CHANNEL_AMOUNT 8
+#define CHANNEL_AMOUNT 6
 #define DETECTION_SPACE 2500
 #define METHOD RISING
 
@@ -42,7 +42,7 @@ void loop()
 {
 ppm_write();
 steer();
-steerint();
+//steerint();
 //modulerun();
 
 /*unsigned long counter = 0;
