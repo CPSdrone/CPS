@@ -5,7 +5,7 @@ double Output[6];//thrust
 double Stick[6];
 
 //Define the aggressive and conservative Tuning Parameters
-double aggKp=0.7, aggKi=0, aggKd=0;
+double aggKp=0.5, aggKi=0.1, aggKd=0;
 double consKp=0.3, consKi=0, consKd=0;
 PID motorPID[]={
 PID(&Input[0], &Output[0], &Setpoint[0], aggKp, aggKi, aggKd, DIRECT),
@@ -86,8 +86,8 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   motorR.attach(motorRpin,1185-135,2185+135);
   motorL.attach(motorLpin,945-135,1945+135);
 
-  valLLR = map(ch[4], 1000, 2000, 90, -90);
-  valRUP = map(ch[2], 1000, 2000, 90, -90); //900,1100
+  valLLR = map(ch[4], 1000, 2000, -90, 90);
+  valRUP = map(ch[2], 1000, 2000, -90, 90); //900,1100
   valLUP = map(ch[3], 1000, 2000, -90, 90);
   valRLR = map(ch[1], 1000, 2000, -90, 90);
   //stick=analogRead(0);
@@ -119,11 +119,11 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   Input[5] = 0;// + accZ;
 
   Stick[0] = valRLR;
-  Stick[1] = map(-valRUP*valLUP,-8100,8100,-90,90);
+  Stick[1] = map(valRUP*valLUP,-8100,8100,-90,90);
   
   Stick[3] = valRUP;
   Stick[4] = 0;
-  Stick[5] = - map(valLUP*(abs(valRUP)-90),-8100,8100,-90,90);
+  Stick[5] = map(-valLUP*(abs(valRUP)-90),-8100,8100,-90,90);
 
     if (abs(Setpoint[2]-Input[2]) < 20)
     {       motorPID[2].SetTunings(consKp, consKi, consKd);
@@ -138,11 +138,11 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   }
 
     
-      motorA.write(+Output[0]+Output[1]+Output[5]+Stick[0]+Stick[1]+Stick[5]+90);
-      motorB.write(-Output[0]+Output[1]+Output[5]-Stick[0]+Stick[1]+Stick[5]+90);
-      motorC.write(-Output[1]+Output[5]-Stick[1]+Stick[5]+90);
-      motorR.write(+Output[2]+Output[3]+Stick[2]+Stick[3]+90);
-      motorL.write(-Output[2]+Output[3]-Stick[2]+Stick[3]+90);//*/
+      motorA.write(-Output[0]-(Output[1]/2)-(Output[5]/2)+Stick[0]+(Stick[1]/2)+(Stick[5]/2)+90);
+      motorB.write(+Output[0]-(Output[1]/2)-(Output[5]/2)-Stick[0]+(Stick[1]/2)+(Stick[5]/2)+90);
+      motorC.write(-(+Output[1]-Output[5]-Stick[1]+Stick[5])+90);
+      motorR.write(-(-Output[2]+Output[3]+Stick[2]-Stick[3])+90);
+      motorL.write(-(+Output[2]+Output[3]-Stick[2]-Stick[3])+90);//*/
     
       /*Serial.print(ch[3]);
       Serial.print("\t");
@@ -154,19 +154,19 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
 void printmotors(float accX, float accY, float accZ){
 
   Serial.print("A ");
-  Serial.print(+Output[0]+Output[1]+Output[5]+Stick[0]+Stick[1]+Stick[5]+90);
+  Serial.print(-Output[0]-(Output[1]/2)+Output[5]+Stick[0]+(Stick[1]/2)+Stick[5]+90);
   Serial.print("\t");
   Serial.print("B ");
-  Serial.print(-Output[0]+Output[1]+Output[5]-Stick[0]+Stick[1]+Stick[5]+90);
+  Serial.print(+Output[0]-(Output[1]/2)+Output[5]-Stick[0]+(Stick[1]/2)+Stick[5]+90);
   Serial.print("\t");
   Serial.print("C ");
-  Serial.print(-Output[1]+Output[5]-Stick[1]+Stick[5]+90);
+  Serial.print(+Output[1]+Output[5]-Stick[1]+Stick[5]+90);
   Serial.print("\t");
   Serial.print("R ");
-  Serial.print(+Output[2]+Output[3]+Stick[2]+Stick[3]+90);
+  Serial.print(+Output[2]+Output[3]+Stick[2]-Stick[3]+90);
   Serial.print("\t");
   Serial.print("L ");
-  Serial.print(-Output[2]+Output[3]-Stick[2]+Stick[3]+90);
+  Serial.print(-Output[2]+Output[3]-Stick[2]-Stick[3]+90);
   
   /*Serial.print("A ");
   Serial.print(roll+pitch+z+90);
