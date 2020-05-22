@@ -93,6 +93,12 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   //stick=analogRead(0);
   //valRLR = map(stick, 0, 1023, 0, 180);
 
+  /*Setpoint[0] = 0;
+  Setpoint[1] = 0;
+  Setpoint[2] = 0;
+  Setpoint[3] = 0;
+  Setpoint[4] = 0;
+  Setpoint[5] = 0;//*/
   
 
   if (1){
