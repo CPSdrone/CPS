@@ -5,7 +5,7 @@ double Output[6];//thrust
 double Stick[6];
 
 //Define the aggressive and conservative Tuning Parameters
-double aggKp=0.5, aggKi=0.1, aggKd=0;
+double aggKp=0.7, aggKi=0.1, aggKd=0;
 double consKp=0.3, consKi=0, consKd=0;
 PID motorPID[]={
 PID(&Input[0], &Output[0], &Setpoint[0], aggKp, aggKi, aggKd, DIRECT),
