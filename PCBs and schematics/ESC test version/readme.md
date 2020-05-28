@@ -1,0 +1,2 @@
+# ESC test version
+This is a work in progress version of our own electronic speed controller for controlling **BLDC** motors featuring **I2C** communication, current and temperature sensors. This is version used only for creating the program and not the final **ESC**!

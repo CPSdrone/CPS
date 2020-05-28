@@ -1,5 +1,4 @@
 #include <SPI.h>
-#include <pins_arduino.h>
 
 //#define DEBUG
 
@@ -14,10 +13,8 @@
 void st_transfer_data(void);
 void st_busy(void);
 
-//uint8_t rcv_buf[RCV_SIZE];
 bounded_buf<RCV_SIZE, uint8_t> rcv_buf;
 
-//uint8_t snd_buf[SND_SIZE];
 bounded_buf<SND_SIZE, uint8_t> snd_buf;
 uint8_t snd_size = 0;
 
@@ -55,8 +52,6 @@ void setup()
   // Finished setup
   Serial.println("Ready!");
 }
-
-
 
 ISR(SPI_STC_vect) { 
   rcv_buf.writeByte(SPDR);
