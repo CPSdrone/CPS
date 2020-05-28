@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "socket.h": "c",
+        "ostream": "cpp"
+    },
+    "spellright.language": [
+        "en_US"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ]
+}

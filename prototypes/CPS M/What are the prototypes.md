@@ -1,0 +1,7 @@
+# CPS M  prototypes
+Along the way, we already had few prototypes of **CPS M**.
+
+Generally, the latest prototype is the best.
+In the folders you'll find models, list of materials and electronic diagrams.
+
+Choose wisely
