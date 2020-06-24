@@ -1,5 +1,3 @@
-//wolna polska
-
 //IMU & PID test
 
 //////PPM READING PRE SETUP/////
@@ -39,7 +37,7 @@ Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1();
 
 
 void setup()
-{
+{  
   Serial.begin(115200);
 
   while (!Serial) {delay(1);}

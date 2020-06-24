@@ -92,7 +92,7 @@ void runIMU()
   // Calculate Pitch & Roll from accelerometer (deg)
   //accPitch = (atan2(a.acceleration.x, a.acceleration.z) * 180.0) / M_PI;
   accPitch = (-(atan2(a.acceleration.x-offaccX, sqrt((a.acceleration.y-offaccY) * (a.acceleration.y-offaccY) + (a.acceleration.z-offaccZ) * (a.acceleration.z-offaccZ))) * 180.0) / M_PI);
-  accRoll  = ((atan2(a.acceleration.y-offaccY, a.acceleration.z-offaccZ) * 180.0) / M_PI)-3;
+  accRoll  = ((atan2(a.acceleration.y-offaccY, a.acceleration.z-offaccZ) * 180.0) / M_PI);
 
   double Bfy = (calmagZ-offmagZ) * sin(accRoll*DEG_TO_RAD) - (calmagY-offmagY) * cos(accRoll*DEG_TO_RAD);
   double Bfx = (calmagX-offmagX) * cos(accPitch*DEG_TO_RAD) + (calmagY-offmagY) * sin(accPitch*DEG_TO_RAD) * sin(accRoll*DEG_TO_RAD) + (calmagZ-offmagZ) * sin(accPitch*DEG_TO_RAD) * cos(accRoll*DEG_TO_RAD);

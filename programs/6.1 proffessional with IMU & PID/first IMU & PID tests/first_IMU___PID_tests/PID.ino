@@ -5,7 +5,7 @@ double Output[6];//thrust
 double Stick[6];
 
 //Define the aggressive and conservative Tuning Parameters
-double aggKp=0.7, aggKi=0.1, aggKd=0;
+double aggKp=1, aggKi=0.5, aggKd=0.2;//1 0.4 0.1 probably optimal
 double consKp=0.3, consKi=0, consKd=0;
 PID motorPID[]={
 PID(&Input[0], &Output[0], &Setpoint[0], aggKp, aggKi, aggKd, DIRECT),
@@ -65,15 +65,15 @@ void setupPID()
   Serial.print(i);}
 }
 
-void runPID(float compRoll, float compPitch, float compYaw, float accX, float accY, float accZ){
+void runPID(float Roll, float Pitch, float Yaw, float accX, float accY, float accZ){
 
   //Serial.println(compRoll);
 
  FREEMODE = ch[6];
  if(FREEMODE>1500){
-  compRoll = 0;
-  compPitch = 0;
-  compYaw = 0;
+  Roll = 0;
+  Pitch = 0;
+  Yaw = 0;
   accX = 0;
   accY = 0;
   accZ = 0;
@@ -92,13 +92,6 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   valRLR = map(ch[1], 1000, 2000, -90, 90);
   //stick=analogRead(0);
   //valRLR = map(stick, 0, 1023, 0, 180);
-
-  /*Setpoint[0] = 0;
-  Setpoint[1] = 0;
-  Setpoint[2] = 0;
-  Setpoint[3] = 0;
-  Setpoint[4] = 0;
-  Setpoint[5] = 0;//*/
   
 
   if (1){
@@ -107,7 +100,7 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   }else{
     if (conLLR<0) conLLR = 360;
     conLLR = (conLLR + valLLR/90)%360;
-    Input[2] = conLLR-180 + compYaw;
+    Input[2] = conLLR-180 + Yaw;
     if (Input[2]>180) Input[2] = Input[2]-360;
     if (Input[2]<-180) Input[2] = Input[2]+360;//*/
     Stick[2] = 0;
@@ -118,8 +111,8 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
     offYaw=conLLR-180;
   }*/
   
-  Input[0] = compRoll;
-  Input[1] = compPitch;
+  Input[0] = Roll;
+  Input[1] = Pitch;
   Input[3] = 0;// + accX;
   Input[4] = 0; //accY + no stick available
   Input[5] = 0;// + accZ;
@@ -131,17 +124,17 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
   Stick[4] = 0;
   Stick[5] = map(-valLUP*(abs(valRUP)-90),-8100,8100,-90,90);
 
-    if (abs(Setpoint[2]-Input[2]) < 20)
+    /*if (abs(Setpoint[2]-Input[2]) < 20)
     {       motorPID[2].SetTunings(consKp, consKi, consKd);
     }else{  motorPID[2].SetTunings(0.5, 0, 0);}//*/
 
   for(byte i=0; i<=5; i++){
     motorPID[i].Compute();
 
-    /*if(abs(Output[i])<10){
+   /*if(abs(Output[i])<10){
       Output[i] = 0;
     }//*/
-  }
+   }
 
     
       motorA.write(-Output[0]-(Output[1]/2)-(Output[5]/2)+Stick[0]+(Stick[1]/2)+(Stick[5]/2)+90);
@@ -154,10 +147,10 @@ void runPID(float compRoll, float compPitch, float compYaw, float accX, float ac
       Serial.print("\t");
       Serial.print(ch[2]);
       Serial.print("\t");//*/
-      printmotors(accX,accY,accZ);
+      printmotors(accX,accY,accZ,Roll,Pitch,Yaw);
 }
-
-void printmotors(float accX, float accY, float accZ){
+  
+void printmotors(float accX, float accY, float accZ, float Roll, float Pitch, float Yaw){
 
   Serial.print("A ");
   Serial.print(-Output[0]-(Output[1]/2)+Output[5]+Stick[0]+(Stick[1]/2)+Stick[5]+90);
@@ -193,13 +186,13 @@ void printmotors(float accX, float accY, float accZ){
   //Serial.pritln();
   
   Serial.print("Pitch ");
-  Serial.print(compPitch);
+  Serial.print(Pitch);
   Serial.print("\t");
   Serial.print("Roll ");
-  Serial.print(compRoll);
+  Serial.print(Roll);
   Serial.print("\t");
   Serial.print("Yaw ");
-  Serial.print(compYaw);
+  Serial.print(Yaw);
 
   Serial.println(); 
 
